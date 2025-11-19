@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AYSO Region Programs Directory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      min-height: 100%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 28px 40px;
+      border-radius: 20px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .header-title {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .badge {
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .admin-btn {
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .admin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .login-container {
+      max-width: 450px;
+      margin: 80px auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 48px;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      text-align: center;
+    }
+
+    .login-icon {
+      font-size: 56px;
+      margin-bottom: 20px;
+    }
+
+    .login-title {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 12px 0;
+    }
+
+    .login-subtitle {
+      font-size: 15px;
+      color: #666;
+      margin: 0 0 32px 0;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .input-group {
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #0054A6;
+      box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c8102e;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      margin-bottom: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .card-title {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 28px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-icon {
+      font-size: 28px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filter-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    select, input[type="text"], textarea {
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 15px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    select:hover, input[type="text"]:hover, textarea:hover {
+      border-color: #0054A6;
+    }
+
+    select:focus, input[type="text"]:focus, textarea:focus {
+      outline: none;
+      border-color: #0054A6;
+      box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 16px 20px;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 15px;
+      color: #374151;
+      background: white;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr {
+      transition: all 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #f9fafb !important;
+      transform: scale(1.01);
+    }
+
+    tbody tr:nth-child(even) td {
+      background: #fafafa;
+    }
+
+    tbody tr:nth-child(even):hover td {
+      background: #f9fafb;
+    }
+
+    .program-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 2px;
+    }
+
+    .admin-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .form-section {
+      background: #f9fafb;
+      padding: 24px;
+      border-radius: 16px;
+      border: 2px solid #e5e7eb;
+    }
+
+    .form-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .checkbox-group:hover {
+      border-color: #0054A6;
+      background: #f9fafb;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #0054A6;
+    }
+
+    .checkbox-group label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex: 1;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-primary:disabled {
+      background: #d1d5db;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background: white;
+      color: #0054A6;
+      border: 2px solid #0054A6;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex: 1;
+    }
+
+    .btn-outline:hover {
+      background: #0054A6;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 84, 166, 0.4);
+    }
+
+    .btn-danger {
+      background: #C8102E;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-danger:hover {
+      background: #a00d25;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(200, 16, 46, 0.4);
+    }
+
+    .btn-edit {
+      background: #0054A6;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-right: 8px;
+    }
+
+    .btn-edit:hover {
+      background: #003d7a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 84, 166, 0.4);
+    }
+
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: white;
+      color: #1f2937;
+      padding: 20px 28px;
+      border-radius: 16px;
+      font-weight: 600;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+      border-left: 4px solid #10b981;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toast.error {
+      border-left-color: #ef4444;
+    }
+
+    .toast-icon {
+      font-size: 24px;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9ca3af;
+    }
+
+    .empty-state-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state-text {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .season-pills {
+      display: flex;
+      gap: 12px;
+    }
+
+    .season-pill {
+      flex: 1;
+      padding: 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 600;
+      color: #6b7280;
+      transition: all 0.3s;
+    }
+
+    .season-pill:hover {
+      border-color: #0054A6;
+      color: #0054A6;
+    }
+
+    .season-pill.selected {
+      background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    @media (max-width: 968px) {
+      .admin-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+ </head>
+ <body>
+  <div class="container">
+   <!-- Public Screen -->
+   <div id="public-screen" class="screen active">
+    <div class="header">
+     <h1 class="header-title" id="app-title">AYSO Region Programs Directory</h1>
+     <div class="header-right">
+       <span class="badge" id="region-count">0 Regions</span>
+       <button class="admin-btn" id="admin-btn">🔐 Admin Access</button>
+     </div>
+    </div>
+
+    <div class="card">
+     <h2 class="card-title">
+       <span class="card-icon">📍</span>
+       <span>Find Regions Near You</span>
+     </h2>
+
+     <div style="margin-bottom: 32px; padding: 24px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 16px; border: 2px solid #0054A6;">
+      <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 700; color: #0054A6;">🎯 Find Your Nearest Regions</h3>
+      <div style="display: flex; gap: 12px; align-items: flex-end;">
+       <div class="filter-group" style="flex: 1;">
+        <label class="filter-label" for="zipcode-search">Enter Your ZIP Code</label>
+        <input type="text" id="zipcode-search" placeholder="e.g., 90210" maxlength="5" pattern="[0-9]{5}">
+       </div>
+       <button class="btn-primary" id="find-nearest-btn" style="height: 48px; flex: 0 0 auto; padding: 0 32px;">
+        🔍 Find Nearest
+       </button>
+      </div>
+     </div>
+
+     <div id="nearest-regions" style="display: none; margin-bottom: 32px;">
+      <h3 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #0054A6; display: flex; align-items: center; gap: 10px;">
+        <span>📍</span>
+        <span>3 Nearest Regions</span>
+      </h3>
+      <div id="nearest-regions-list"></div>
+     </div>
+
+     <h2 class="card-title" style="margin-top: 40px;">
+       <span class="card-icon">🔍</span>
+       <span id="public-card-title">Browse All Regions</span>
+     </h2>
+
+     <div class="filters">
+      <div class="filter-group">
+        <label class="filter-label" for="public-section">Section</label>
+        <select id="public-section">
+          <option value="">All Sections</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="public-area">Area</label>
+        <select id="public-area">
+          <option value="">All Areas</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="public-program">Program</label>
+        <select id="public-program">
+          <option value="">All Programs</option>
+          <option value="jam">Jam</option>
+          <option value="play">Play</option>
+          <option value="school">School</option>
+          <option value="adult">Adult</option>
+          <option value="epic">EPIC</option>
+          <option value="united">United</option>
+          <option value="camps">Camps</option>
+        </select>
+      </div>
+     </div>
+
+     <div class="table-container">
+      <table>
+       <thead>
+        <tr>
+         <th>Section</th>
+         <th>Area</th>
+         <th>Region</th>
+         <th>Season</th>
+         <th>Programs</th>
+        </tr>
+       </thead>
+       <tbody id="public-table-body">
+        <tr>
+         <td colspan="5">
+          <div class="empty-state">
+           <div class="empty-state-icon">⚽</div>
+           <div class="empty-state-text">No regions yet. Add regions via admin panel.</div>
+          </div>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+
+   <!-- Login Screen -->
+   <div id="login-screen" class="screen">
+    <div class="login-container">
+     <div class="login-icon">🔐</div>
+     <h2 class="login-title">Admin Access</h2>
+     <p class="login-subtitle">Enter your password to manage regions</p>
+     <form class="login-form" id="login-form">
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter admin password" required>
+      </div>
+      <div class="error-message" id="error-message">
+       ❌ Incorrect password. Please try again.
+      </div>
+      <button type="submit" class="btn-primary">Login</button>
+      <button type="button" class="btn-outline" id="cancel-login">Cancel</button>
+     </form>
+    </div>
+   </div>
+
+   <!-- Admin Screen -->
+   <div id="admin-screen" class="screen">
+    <div class="header">
+     <h1 class="header-title">Admin Panel</h1>
+     <div class="header-right">
+       <span class="badge" id="admin-region-count">0 Regions</span>
+       <button class="admin-btn" id="logout-btn">🔓 Logout</button>
+     </div>
+    </div>
+
+    <!-- Add/Edit Region Card -->
+    <div class="card">
+     <h2 class="card-title" id="admin-card-title">
+       <span class="card-icon">➕</span>
+       <span>Add New Region</span>
+     </h2>
+
+     <div class="admin-form-grid">
+      <!-- Basic Information Section -->
+      <div class="form-section">
+       <h3 class="form-section-title">📋 Basic Information</h3>
+       <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="filter-group">
+          <label class="filter-label" for="admin-section">Section *</label>
+          <select id="admin-section" required>
+            <option value="">Select Section</option>
+            <option value="1">Section 1</option>
+            <option value="2">Section 2</option>
+            <option value="3">Section 3</option>
+            <option value="5">Section 5</option>
+            <option value="6">Section 6</option>
+            <option value="7">Section 7</option>
+            <option value="8">Section 8</option>
+            <option value="9">Section 9</option>
+            <option value="10">Section 10</option>
+            <option value="11">Section 11</option>
+            <option value="12">Section 12</option>
+            <option value="13">Section 13</option>
+            <option value="14">Section 14</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="admin-area">Area *</label>
+          <input type="text" id="admin-area" placeholder="e.g., A, B, C" required>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="admin-region">Region Number *</label>
+          <input type="text" id="admin-region" placeholder="e.g., 100" required>
+        </div>
+       </div>
+      </div>
+
+      <!-- Season Selection Section -->
+      <div class="form-section">
+       <h3 class="form-section-title">🗓️ Season</h3>
+       <div class="season-pills">
+        <div class="season-pill selected" data-season="Fall">
+         <div style="font-size: 24px; margin-bottom: 4px;">🍂</div>
+         <div>Fall</div>
+        </div>
+        <div class="season-pill" data-season="Spring">
+         <div style="font-size: 24px; margin-bottom: 4px;">🌸</div>
+         <div>Spring</div>
+        </div>
+       </div>
+       <input type="hidden" id="admin-season" value="Fall">
+      </div>
+
+      <!-- Programs Section -->
+      <div class="form-section full-width">
+       <h3 class="form-section-title">⚽ Programs Offered</h3>
+       <div class="checkbox-grid">
+        <div class="checkbox-group">
+          <input type="checkbox" id="prog-jam">
+          <label for="prog-jam">🎵 Jam</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="prog-play">
+          <label for="prog-play">🎮 Play</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="prog-school">
+          <label for="prog-school">🏫 School</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="prog-adult">
+          <label for="prog-adult">👥 Adult</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="prog-epic">
+          <label for="prog-epic">⭐ EPIC</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="prog-united">
+          <label for="prog-united">🤝 United</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="prog-camps">
+          <label for="prog-camps">⛺ Camps</label>
+        </div>
+       </div>
+      </div>
+
+      <!-- Notes Section -->
+      <div class="form-section full-width">
+       <h3 class="form-section-title">📝 Notes (Optional)</h3>
+       <div class="filter-group">
+        <textarea id="admin-notes" placeholder="Add any additional notes or information about this region..."></textarea>
+       </div>
+      </div>
+     </div>
+
+     <div class="button-group">
+      <button class="btn-primary" id="add-region-btn">
+        <span id="add-btn-text">✨ Add Region</span>
+      </button>
+      <button class="btn-outline" id="clear-form-btn">🔄 Clear Form</button>
+     </div>
+    </div>
+
+    <!-- Manage Regions Card -->
+    <div class="card">
+     <h2 class="card-title">
+       <span class="card-icon">📋</span>
+       <span>Manage Regions</span>
+     </h2>
+     <div class="table-container">
+      <table>
+       <thead>
+        <tr>
+         <th>Section</th>
+         <th>Area</th>
+         <th>Region</th>
+         <th>Season</th>
+         <th>Programs</th>
+         <th>Notes</th>
+         <th style="width: 150px;">Actions</th>
+        </tr>
+       </thead>
+       <tbody id="admin-table-body">
+        <tr>
+         <td colspan="7">
+          <div class="empty-state">
+           <div class="empty-state-icon">📋</div>
+           <div class="empty-state-text">No regions yet. Add your first region above!</div>
+          </div>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <script>
+    // -------------------------------------------
+    // 1) PRELOADED DATA (REPLACE WITH YOUR FULL SET)
+    // -------------------------------------------
+
+    const PRELOADED_REGIONS = [
+      // Replace these sample objects with the full list from your spreadsheet
+      // section, area, region, season, jam/play/school/adult/epic/united/camps as booleans
+      { section: "10", area: "W", region: "304", season: "Fall",
+        jam: true,  play: true,  school: false, adult: false,
+        epic: true, united: false, camps: false, notes: "" },
+
+      { section: "10", area: "W", region: "682", season: "Fall",
+        jam: false, play: true,  school: false, adult: false,
+        epic: false, united: false, camps: false, notes: "" },
+
+      { section: "1", area: "A", region: "1", season: "Fall",
+        jam: false, play: true,  school: true,  adult: false,
+        epic: false, united: false, camps: true, notes: "" },
+
+      // ...add the remaining regions here...
+    ];
+
+    let allRegions = [...PRELOADED_REGIONS];
+    let editingRegion = null;
+
+    // -------------------------------------------
+    // 2) HELPER FUNCTIONS
+    // -------------------------------------------
+
+    function showToast(message, isError = false) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${isError ? 'error' : ''}`;
+      const icon = isError ? '❌' : '✅';
+      toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    function updateRegionCounts() {
+      const count = allRegions.length;
+      const countText = `${count} Region${count !== 1 ? 's' : ''}`;
+      document.getElementById('region-count').textContent = countText;
+      document.getElementById('admin-region-count').textContent = countText;
+    }
+
+    function getProgramsList(region) {
+      const programs = [];
+      if (region.jam) programs.push('Jam');
+      if (region.play) programs.push('Play');
+      if (region.school) programs.push('School');
+      if (region.adult) programs.push('Adult');
+      if (region.epic) programs.push('EPIC');
+      if (region.united) programs.push('United');
+      if (region.camps) programs.push('Camps');
+      return programs;
+    }
+
+    // -------------------------------------------
+    // 3) PUBLIC VIEW (TABLE + FILTERS)
+    // -------------------------------------------
+
+    function updatePublicView() {
+      const tbody = document.getElementById('public-table-body');
+      const sectionFilter = document.getElementById('public-section').value;
+      const areaFilter = document.getElementById('public-area').value;
+      const programFilter = document.getElementById('public-program').value;
+
+      let filtered = allRegions;
+
+      if (sectionFilter) {
+        filtered = filtered.filter(r => r.section === sectionFilter);
+      }
+      if (areaFilter) {
+        filtered = filtered.filter(r => r.area === areaFilter);
+      }
+      if (programFilter) {
+        filtered = filtered.filter(r => r[programFilter] === true);
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5">
+              <div class="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-text">No regions match your filters</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(region => {
+        const programs = getProgramsList(region);
+        const programTags = programs.map(p => `<span class="program-tag">${p}</span>`).join('');
+        return `
+          <tr>
+            <td><strong>${region.section}</strong></td>
+            <td><strong>${region.area}</strong></td>
+            <td><strong>${region.region}</strong></td>
+            <td>${region.season || 'Fall'}</td>
+            <td>${programTags || '—'}</td>
+          </tr>
+        `;
+      }).join('');
+
+      updateFilterOptions();
+    }
+
+    function updateFilterOptions() {
+      const sections = [...new Set(allRegions.map(r => r.section))].sort();
+      const areas = [...new Set(allRegions.map(r => r.area))].sort();
+
+      const sectionSelect = document.getElementById('public-section');
+      const currentSection = sectionSelect.value;
+      sectionSelect.innerHTML = '<option value="">All Sections</option>' +
+        sections.map(s => `<option value="${s}">Section ${s}</option>`).join('');
+      sectionSelect.value = currentSection;
+
+      const areaSelect = document.getElementById('public-area');
+      const currentArea = areaSelect.value;
+      areaSelect.innerHTML = '<option value="">All Areas</option>' +
+        areas.map(a => `<option value="${a}">Area ${a}</option>`).join('');
+      areaSelect.value = currentArea;
+    }
+
+    // -------------------------------------------
+    // 4) ADMIN TABLE
+    // -------------------------------------------
+
+    function updateAdminView() {
+      const tbody = document.getElementById('admin-table-body');
+
+      if (allRegions.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="empty-state">
+                <div class="empty-state-icon">📋</div>
+                <div class="empty-state-text">No regions yet. Add your first region above!</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const sorted = [...allRegions].sort((a, b) => {
+        if (a.section !== b.section) return a.section.localeCompare(b.section);
+        if (a.area !== b.area) return a.area.localeCompare(b.area);
+        return a.region.localeCompare(b.region);
+      });
+
+      tbody.innerHTML = sorted.map(region => {
+        const programs = getProgramsList(region);
+        const programTags = programs.map(p => `<span class="program-tag">${p}</span>`).join('');
+        const notes = region.notes || '—';
+        return `
+          <tr>
+            <td><strong>${region.section}</strong></td>
+            <td><strong>${region.area}</strong></td>
+            <td><strong>${region.region}</strong></td>
+            <td>${region.season || 'Fall'}</td>
+            <td>${programTags || '—'}</td>
+            <td style="max-width: 200px;">${notes}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-edit edit-btn" data-region='${JSON.stringify(region)}'>✏️ Edit</button>
+                <button class="btn-danger delete-btn" data-region='${JSON.stringify(region)}'>🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Add event listeners for edit buttons
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const region = JSON.parse(this.getAttribute('data-region'));
+          editRegion(region);
+        });
+      });
+
+      // Add event listeners for delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const region = JSON.parse(this.getAttribute('data-region'));
+          deleteRegion(region);
+        });
+      });
+    }
+
+    function editRegion(region) {
+      editingRegion = region;
+      
+      document.querySelector('.card').scrollIntoView({ behavior: 'smooth' });
+      
+      document.getElementById('admin-section').value = region.section;
+      document.getElementById('admin-area').value = region.area;
+      document.getElementById('admin-region').value = region.region;
+      document.getElementById('admin-season').value = region.season || 'Fall';
+      
+      document.querySelectorAll('.season-pill').forEach(pill => {
+        pill.classList.remove('selected');
+        if (pill.getAttribute('data-season') === (region.season || 'Fall')) {
+          pill.classList.add('selected');
+        }
+      });
+      
+      document.getElementById('prog-jam').checked = region.jam || false;
+      document.getElementById('prog-play').checked = region.play || false;
+      document.getElementById('prog-school').checked = region.school || false;
+      document.getElementById('prog-adult').checked = region.adult || false;
+      document.getElementById('prog-epic').checked = region.epic || false;
+      document.getElementById('prog-united').checked = region.united || false;
+      document.getElementById('prog-camps').checked = region.camps || false;
+      document.getElementById('admin-notes').value = region.notes || '';
+      
+      document.getElementById('add-btn-text').textContent = '💾 Update Region';
+      document.querySelector('#admin-card-title span:last-child').textContent = 'Edit Region';
+      
+      showToast('Editing region - make changes and click Update');
+    }
+
+    function deleteRegion(region) {
+      const index = allRegions.findIndex(r => 
+        r.section === region.section && 
+        r.area === region.area && 
+        r.region === region.region
+      );
+      
+      if (index !== -1) {
+        allRegions.splice(index, 1);
+        updatePublicView();
+        updateAdminView();
+        updateRegionCounts();
+        showToast('Region deleted successfully');
+      }
+    }
+
+    function clearForm() {
+      editingRegion = null;
+      document.getElementById('admin-section').value = '';
+      document.getElementById('admin-area').value = '';
+      document.getElementById('admin-region').value = '';
+      document.getElementById('admin-season').value = 'Fall';
+      
+      document.querySelectorAll('.season-pill').forEach(pill => {
+        pill.classList.remove('selected');
+        if (pill.getAttribute('data-season') === 'Fall') {
+          pill.classList.add('selected');
+        }
+      });
+      
+      // Only clear the program checkboxes in the programs section
+      document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.getElementById('admin-notes').value = '';
+      document.getElementById('add-btn-text').textContent = '✨ Add Region';
+      document.querySelector('#admin-card-title span:last-child').textContent = 'Add New Region';
+    }
+
+    // Season pill selection
+    document.querySelectorAll('.season-pill').forEach(pill => {
+      pill.addEventListener('click', function() {
+        document.querySelectorAll('.season-pill').forEach(p => p.classList.remove('selected'));
+        this.classList.add('selected');
+        document.getElementById('admin-season').value = this.getAttribute('data-season');
+      });
+    });
+
+    // Add/Update region
+    document.getElementById('add-region-btn').addEventListener('click', function() {
+      const section = document.getElementById('admin-section').value;
+      const area = document.getElementById('admin-area').value;
+      const region = document.getElementById('admin-region').value;
+      const season = document.getElementById('admin-season').value;
+      const notes = document.getElementById('admin-notes').value;
+
+      if (!section || !area || !region) {
+        showToast('Please fill in Section, Area, and Region', true);
+        return;
+      }
+
+      const regionData = {
+        section,
+        area,
+        region,
+        season,
+        jam: document.getElementById('prog-jam').checked,
+        play: document.getElementById('prog-play').checked,
+        school: document.getElementById('prog-school').checked,
+        adult: document.getElementById('prog-adult').checked,
+        epic: document.getElementById('prog-epic').checked,
+        united: document.getElementById('prog-united').checked,
+        camps: document.getElementById('prog-camps').checked,
+        notes: notes
+      };
+
+      if (editingRegion) {
+        const index = allRegions.findIndex(r => 
+          r.section === editingRegion.section && 
+          r.area === editingRegion.area && 
+          r.region === editingRegion.region
+        );
+        
+        if (index !== -1) {
+          allRegions[index] = regionData;
+          showToast('Region updated successfully');
+        }
+      } else {
+        allRegions.push(regionData);
+        showToast('Region added successfully');
+      }
+
+      updatePublicView();
+      updateAdminView();
+      updateRegionCounts();
+      clearForm();
+    });
+
+    document.getElementById('clear-form-btn').addEventListener('click', clearForm);
+
+    // Filter change handlers
+    document.getElementById('public-section').addEventListener('change', updatePublicView);
+    document.getElementById('public-area').addEventListener('change', updatePublicView);
+    document.getElementById('public-program').addEventListener('change', updatePublicView);
+
+    // -------------------------------------------
+    // 5) ZIP → REGION LOCATOR (Top 3 closest)
+    // -------------------------------------------
+
+    document.getElementById('find-nearest-btn').addEventListener('click', async function() {
+      const zipcode = document.getElementById('zipcode-search').value.trim();
+      
+      if (!zipcode || zipcode.length !== 5 || !/^\d{5}$/.test(zipcode)) {
+        showToast('Please enter a valid 5-digit ZIP code', true);
+        return;
+      }
+
+      const btn = this;
+      btn.disabled = true;
+      btn.innerHTML = '🔄 Searching...';
+
+      try {
+        // This mimics what the AYSO Region Locator does behind the scenes:
+        // calls the RegionDistance API for the top 3 closest regions.
+        const response = await fetch(`https://www.aysonational.org/api/reg/api/v1/RegionDistance/zip/${zipcode}/3`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch regions');
+        }
+
+        const nearestRegions = await response.json();
+
+        if (!nearestRegions || nearestRegions.length === 0) {
+          showToast('No regions found near this ZIP code', true);
+          document.getElementById('nearest-regions').style.display = 'none';
+          btn.disabled = false;
+          btn.innerHTML = '🔍 Find Nearest';
+          return;
+        }
+
+        displayNearestRegions(nearestRegions);
+        document.getElementById('nearest-regions').style.display = 'block';
+        document.getElementById('nearest-regions').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        showToast(`Found ${nearestRegions.length} nearest region${nearestRegions.length !== 1 ? 's' : ''}!`);
+
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+        showToast('Error finding regions. Please try again.', true);
+        document.getElementById('nearest-regions').style.display = 'none';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🔍 Find Nearest';
+      }
+    });
+
+    function displayNearestRegions(regions) {
+      const container = document.getElementById('nearest-regions-list');
+      
+      container.innerHTML = regions.map((region, index) => {
+        // Match programs from our local preloaded data if available
+        const localRegion = allRegions.find(r => 
+          r.region === region.RegionNumber.toString() && 
+          r.section === region.SectionNumber.toString()
+        );
+        const programs = localRegion ? getProgramsList(localRegion) : [];
+        const programTags = programs.length > 0 
+          ? programs.map(p => `<span class="program-tag">${p}</span>`).join('')
+          : '<span style="color: #9ca3af; font-style: italic;">Contact region for program details</span>';
+
+        return `
+          <div style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px; border: 2px solid ${index === 0 ? '#0054A6' : '#e5e7eb'}; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                  ${index === 0 ? '<span style="background: #0054A6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">CLOSEST</span>' : ''}
+                  <h4 style="margin: 0; font-size: 24px; font-weight: 800; color: #0054A6;">Region ${region.RegionNumber}</h4>
+                </div>
+                <p style="margin: 0; font-size: 15px; color: #6b7280;">
+                  <strong>Section ${region.SectionNumber}</strong> · Area ${region.AreaDesignation}
+                </p>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 28px; font-weight: 800; color: #0054A6;">${region.Distance.toFixed(1)} mi</div>
+                <div style="font-size: 13px; color: #6b7280;">away</div>
+              </div>
+            </div>
+            
+            <div style="background: #f9fafb; padding: 16px; border-radius: 12px; margin-bottom: 12px;">
+              <div style="font-size: 13px; font-weight: 600; color: #6b7280; margin-bottom: 8px;">📍 LOCATION</div>
+              <div style="font-size: 15px; color: #374151; line-height: 1.6;">
+                ${region.City ? `<strong>${region.City}</strong>, ` : ''}${region.State || ''} ${region.Zip || ''}
+              </div>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 13px; font-weight: 600; color: #6b7280; margin-bottom: 8px;">⚽ PROGRAMS OFFERED</div>
+              <div>${programTags}</div>
+            </div>
+
+            ${region.WebSite ? `
+              <a href="${region.WebSite}" target="_blank" rel="noopener noreferrer" 
+                 style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%); color: white; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 14px; transition: all 0.3s;">
+                🌐 Visit Region Website
+              </a>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // -------------------------------------------
+    // 6) SCREEN NAV + ADMIN AUTH
+    // -------------------------------------------
+
+    const ADMIN_PASSWORD = 'PLAYSOCCER';
+    
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    document.getElementById('admin-btn').addEventListener('click', function() {
+      showScreen('login-screen');
+      document.getElementById('password').value = '';
+      document.getElementById('error-message').classList.remove('show');
+    });
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      
+      if (password === ADMIN_PASSWORD) {
+        showScreen('admin-screen');
+        document.getElementById('password').value = '';
+        document.getElementById('error-message').classList.remove('show');
+      } else {
+        document.getElementById('error-message').classList.add('show');
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+      }
+    });
+
+    document.getElementById('cancel-login').addEventListener('click', function() {
+      showScreen('public-screen');
+      document.getElementById('password').value = '';
+      document.getElementById('error-message').classList.remove('show');
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      showScreen('public-screen');
+    });
+
+    // -------------------------------------------
+    // 7) INITIALIZE
+    // -------------------------------------------
+
+    updatePublicView();
+    updateAdminView();
+    updateRegionCounts();
+  </script>
+ </body>
+</html>
